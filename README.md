@@ -157,11 +157,11 @@ Xcode 없이 Command Line Tools만으로 빌드됩니다.
 | `VOICETYPING_MODEL_BASE="$HOME/Library/Application Support/VoiceTyping" swift test --filter SpeechModelTests` | 실제 모델로 한영 혼용 받아쓰기 통합 테스트 |
 | `./build.sh` | `build/Voice Typing.app` 과 `dist/VoiceTyping-<버전>.dmg` 생성. `--open` 을 붙이면 바로 실행 |
 | `./install.sh [dmg]` | dmg 를 `/Applications` 에 설치하고 실행. dmg 를 안 주면 빌드부터 |
-| `README_SCREENSHOTS_DIR=docs/assets/readme VOICETYPING_MODEL_BASE="$HOME/Library/Application Support/VoiceTyping" swift test --filter ReadmeScreenshots` | README 앱 화면 이미지(01~03)를 실제 화면 코드로 다시 그림. 창을 띄우지 않음 |
+| 디버그 빌드를 `-ScreenshotState first-run\|recording\|done` 으로 실행 | README 앱 화면(01~03) 상태로 시작. 메뉴바 창을 열어 캡처 (마이크는 열지 않음) |
 
 - **버전:** `VERSION` 파일(예: `1.1.0`)이 기준입니다. 고치고 다시 빌드하면 앱 창 제목 옆 버전과 dmg 이름에 반영됩니다.
 - **서명:** 기본은 ad-hoc 서명입니다. 개발자 인증서가 있으면 `VOICETYPING_SIGN_ID="Developer ID Application: …" ./build.sh`.
-- **설계 문서:** `docs/` (설계안, 구현 계획, 질의응답 기록 `docs/history/`)
+- **설계 문서:** `docs/` (설계안, 구현 계획)
 
 ## 9. 삭제
 

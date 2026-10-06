@@ -86,3 +86,12 @@ final class Paster {
         return AXIsProcessTrustedWithOptions(["AXTrustedCheckOptionPrompt": !prompted] as CFDictionary)
     }
 }
+
+#if DEBUG
+extension Paster {
+    /// README 화면 캡처용: 붙여넣기 대상을 macOS 기본 터미널로 보이게 한다 (디버그 빌드 전용, 터미널이 실행 중이어야 함)
+    func stageForScreenshot() {
+        target = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.Terminal").first
+    }
+}
+#endif

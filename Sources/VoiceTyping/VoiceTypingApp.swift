@@ -5,13 +5,31 @@ import SwiftUI
 struct VoiceTypingApp: App {
     @State private var model: SpeechModel
     @State private var transcriber: Transcriber
-    @State private var paster = Paster()
+    @State private var paster: Paster
 
     init() {
+        #if DEBUG
+        // README 화면 캡처용 (디버그 빌드 전용): -ScreenshotState first-run|recording|done 으로 실행하면 그 화면으로 시작한다.
+        // first-run 은 빈 폴더를 모델 위치로 써서 내려받기 버튼 화면을 만든다.
+        let shot = UserDefaults.standard.string(forKey: "ScreenshotState")
+        let model = shot == "first-run"
+            ? SpeechModel(base: FileManager.default.temporaryDirectory.appending(path: "voicetyping-first-run"))
+            : SpeechModel()
+        #else
         let model = SpeechModel()
+        #endif
+        let transcriber = Transcriber(model: model)
+        let paster = Paster()
         _model = State(initialValue: model)
-        _transcriber = State(initialValue: Transcriber(model: model))
-        Task { await model.prepare() }   // 앱을 켜자마자 모델을 불러와 둔다
+        _transcriber = State(initialValue: transcriber)
+        _paster = State(initialValue: paster)
+        Task {
+            await model.prepare()        // 앱을 켜자마자 모델을 불러와 둔다
+            #if DEBUG
+            transcriber.stageForScreenshot(shot)
+            if shot != nil { paster.stageForScreenshot() }
+            #endif
+        }
     }
 
     var body: some Scene {
@@ -44,8 +62,6 @@ struct PopoverView: View {
     @Bindable var transcriber: Transcriber
     let model: SpeechModel
     let paster: Paster
-    /// 제목 옆 버전. README 화면 이미지를 만들 때는 앱 밖에서 그리므로 바깥에서 넣어 준다.
-    var version = AppVersion.label(from: Bundle.main.infoDictionary)
     @State private var notice: String?
 
     var body: some View {
@@ -64,7 +80,7 @@ struct PopoverView: View {
     private var header: some View {
         HStack {
             Text("Voice Typing").font(.headline)
-            Text(version)
+            Text(AppVersion.label(from: Bundle.main.infoDictionary))
                 .font(.caption).foregroundStyle(.secondary)
             Spacer()
             Text("🔒 한국어 · 온디바이스")
@@ -98,6 +114,7 @@ struct PopoverView: View {
             }
         }
         .font(.callout)
+        .fixedSize(horizontal: false, vertical: true)   // 메뉴바 창에서 안내 문장이 한 줄로 잘리지 않고 줄바꿈되게
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.blue.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))

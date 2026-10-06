@@ -5,3 +5,5 @@
 build/
 dist/
 .DS_Store
+# 질의응답 기록은 로컬에만 둔다 (커밋하지 않음)
+docs/history/

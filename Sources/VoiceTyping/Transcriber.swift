@@ -336,12 +336,21 @@ final class Transcriber {
 
 #if DEBUG
 extension Transcriber {
-    /// README 화면 이미지용: 마이크를 열지 않고 "녹음 중" 화면 상태만 만든다 (디버그 빌드 전용)
-    func showRecordingForScreenshot(levels: [Float], startedAt: Date) {
-        state = .recording
-        listening = true
-        self.levels = levels
-        self.startedAt = startedAt
+    /// README 화면 캡처용: 마이크를 열지 않고 화면 상태만 만든다 (디버그 빌드 전용)
+    func stageForScreenshot(_ shot: String?) {
+        switch shot {
+        case "recording":
+            buffer.update("오늘 Claude Code에서 commit하고 push한 다음에", utteranceEnded: false)
+            state = .recording
+            listening = true
+            levels = [0.05, 0.1, 0.3, 0.55, 0.4, 0.7, 0.5, 0.25, 0.6, 0.8, 0.45, 0.3,
+                      0.5, 0.65, 0.35, 0.2, 0.45, 0.7, 0.55, 0.3, 0.15, 0.4, 0.6, 0.35]
+            startedAt = Date().addingTimeInterval(-6)
+        case "done":
+            buffer.text = "오늘 Claude Code에서 commit하고 push한 다음에 pull request 만들어줘."
+        default:
+            break
+        }
     }
 }
 #endif
