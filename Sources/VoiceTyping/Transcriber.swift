@@ -334,6 +334,18 @@ final class Transcriber {
     }
 }
 
+#if DEBUG
+extension Transcriber {
+    /// README 화면 이미지용: 마이크를 열지 않고 "녹음 중" 화면 상태만 만든다 (디버그 빌드 전용)
+    func showRecordingForScreenshot(levels: [Float], startedAt: Date) {
+        state = .recording
+        listening = true
+        self.levels = levels
+        self.startedAt = startedAt
+    }
+}
+#endif
+
 // 상태는 모두 메인 스레드에서만 바꾼다 (마이크 탭은 static 함수만 부르고 메인으로 넘긴다).
 // 알림·타이머 콜백이 self 를 메인 큐에서 다시 부르므로 Sendable 검사를 이 약속으로 대신한다.
 extension Transcriber: @unchecked Sendable {}

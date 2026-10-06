@@ -44,6 +44,8 @@ struct PopoverView: View {
     @Bindable var transcriber: Transcriber
     let model: SpeechModel
     let paster: Paster
+    /// 제목 옆 버전. README 화면 이미지를 만들 때는 앱 밖에서 그리므로 바깥에서 넣어 준다.
+    var version = AppVersion.label(from: Bundle.main.infoDictionary)
     @State private var notice: String?
 
     var body: some View {
@@ -62,7 +64,7 @@ struct PopoverView: View {
     private var header: some View {
         HStack {
             Text("Voice Typing").font(.headline)
-            Text(AppVersion.label(from: Bundle.main.infoDictionary))
+            Text(version)
                 .font(.caption).foregroundStyle(.secondary)
             Spacer()
             Text("🔒 한국어 · 온디바이스")

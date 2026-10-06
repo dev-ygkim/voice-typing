@@ -54,6 +54,8 @@ Siri나 macOS 받아쓰기(Dictation) 설정은 **필요 없습니다.** v1.0에
 
 메뉴바 🎙를 누르면 창 위쪽에 안내가 보입니다. **[음성 모델 내려받기]** 를 누릅니다.
 
+![첫 실행 - 음성 모델 내려받기](docs/assets/readme/01-model-download.png)
+
 - 회선 속도에 따라 수 분에서 수십 분 걸립니다.
 - 받는 동안 진행률(%)이 보입니다. 끊기면 [다시 내려받기]를 누르세요. 받아 둔 파일은 다시 받지 않습니다.
 - 다 받으면 "음성 모델 준비 중…"이 잠시 보입니다. 처음 한 번은 **20~30초**, 그 뒤로는 앱을 켤 때마다 몇 초면 됩니다.
@@ -85,10 +87,15 @@ Siri나 macOS 받아쓰기(Dictation) 설정은 **필요 없습니다.** v1.0에
 2. 메뉴바 🎙 → 빨간 **● 녹음** 버튼을 누릅니다. "마이크 연결 중…"이 **빨간 "녹음 중"으로 바뀌면** 말합니다.
    - 블루투스 이어폰(AirPods 등)은 마이크 모드로 바뀌는 데 1초 남짓 걸립니다. 그 전에 한 말은 녹음되지 않습니다.
    - 글자가 1~2초 늦게 따라옵니다. **회색 글자**는 아직 바뀔 수 있는 부분입니다.
+
+   ![녹음 중 - 실시간 받아쓰기](docs/assets/readme/02-recording.png)
+
 3. **■ 정지**를 누르면 녹음 전체를 한 번 더 받아써 확정합니다 ("마무리 중…").
 4. 틀린 곳이 있으면 글자 칸에서 직접 고칩니다.
 5. **[복사+붙여넣기]** 를 누르면 1번에서 클릭해 둔 앱에 글자가 들어갑니다.
    - **Enter는 직접 누르세요.** 실수로 명령이 실행되지 않도록 일부러 누르지 않습니다.
+
+   ![인식 완료 - 복사+붙여넣기](docs/assets/readme/03-done.png)
 
 창 아래쪽의 "붙여넣기 대상"에서 글자가 들어갈 앱을 확인할 수 있습니다.
 
@@ -150,6 +157,7 @@ Xcode 없이 Command Line Tools만으로 빌드됩니다.
 | `VOICETYPING_MODEL_BASE="$HOME/Library/Application Support/VoiceTyping" swift test --filter SpeechModelTests` | 실제 모델로 한영 혼용 받아쓰기 통합 테스트 |
 | `./build.sh` | `build/Voice Typing.app` 과 `dist/VoiceTyping-<버전>.dmg` 생성. `--open` 을 붙이면 바로 실행 |
 | `./install.sh [dmg]` | dmg 를 `/Applications` 에 설치하고 실행. dmg 를 안 주면 빌드부터 |
+| `README_SCREENSHOTS_DIR=docs/assets/readme VOICETYPING_MODEL_BASE="$HOME/Library/Application Support/VoiceTyping" swift test --filter ReadmeScreenshots` | README 앱 화면 이미지(01~03)를 실제 화면 코드로 다시 그림. 창을 띄우지 않음 |
 
 - **버전:** `VERSION` 파일(예: `1.1.0`)이 기준입니다. 고치고 다시 빌드하면 앱 창 제목 옆 버전과 dmg 이름에 반영됩니다.
 - **서명:** 기본은 ad-hoc 서명입니다. 개발자 인증서가 있으면 `VOICETYPING_SIGN_ID="Developer ID Application: …" ./build.sh`.
