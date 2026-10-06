@@ -1,0 +1,7 @@
+# SwiftPM 빌드 결과
+.build/
+.swiftpm/
+# build.sh 결과물 (앱 번들, dmg)
+build/
+dist/
+.DS_Store

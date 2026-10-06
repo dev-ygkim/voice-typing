@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 820" width="1000" height="820" font-family="-apple-system, 'SF Pro Text', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#3f3f46"/>
+    </marker>
+    <marker id="fr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#dc6b6b"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="820" fill="#ffffff"/>
+
+  <g font-size="13" fill="#18181b" text-anchor="middle">
+    <!-- 메인 단계 -->
+    <rect x="260" y="60" width="320" height="52" rx="10" fill="#eef4ff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="420" y="82" font-weight="700">① 메뉴바 🎙 클릭 → 팝오버 열림</text>
+    <text x="420" y="101" font-size="12" fill="#52525b">직전 활성 앱(터미널)을 붙여넣기 대상으로 기억</text>
+
+    <rect x="260" y="138" width="320" height="52" rx="10" fill="#eef4ff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="420" y="160" font-weight="700">② [● 녹음] → 마이크 캡처 시작</text>
+    <text x="420" y="179" font-size="12" fill="#52525b">권한 확인 · 메뉴바 아이콘에 빨간 점</text>
+
+    <rect x="260" y="216" width="320" height="52" rx="10" fill="#eef4ff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="420" y="238" font-weight="700">③ 말하는 동안 텍스트가 실시간 표시</text>
+    <text x="420" y="257" font-size="12" fill="#52525b">온디바이스 인식 · 부분 결과는 회색으로</text>
+
+    <rect x="260" y="294" width="320" height="52" rx="10" fill="#eef4ff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="420" y="316" font-weight="700">④ [■ 정지] → 최종 텍스트 확정</text>
+    <text x="420" y="335" font-size="12" fill="#52525b">다시 녹음하면 뒤에 이어서 추가</text>
+
+    <rect x="260" y="372" width="320" height="52" rx="10" fill="#eef4ff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="420" y="394" font-weight="700">⑤ 텍스트 확인 · 필요하면 직접 수정</text>
+    <text x="420" y="413" font-size="12" fill="#52525b">오인식 단어를 여기서 고침</text>
+
+    <!-- 분기 -->
+    <path d="M420 446 L530 486 L420 526 L310 486 Z" fill="#fffbeb" stroke="#d4a017" stroke-width="1.5"/>
+    <text x="420" y="491" font-weight="700">어떤 버튼?</text>
+
+    <!-- 왼쪽: 복사 -->
+    <rect x="60" y="570" width="280" height="52" rx="10" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="200" y="592" font-weight="700">클립보드에 복사</text>
+    <text x="200" y="611" font-size="12" fill="#52525b">"복사됨" 표시 · 텍스트 유지</text>
+
+    <rect x="60" y="648" width="280" height="52" rx="10" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="200" y="670" font-weight="700">원하는 곳에서 직접 ⌘V</text>
+    <text x="200" y="689" font-size="12" fill="#52525b">Slack, 브라우저 등 어디든</text>
+
+    <!-- 오른쪽: 복사+붙여넣기 -->
+    <rect x="440" y="570" width="280" height="52" rx="10" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="580" y="592" font-weight="700">클립보드 복사 + 팝오버 닫기</text>
+    <text x="580" y="611" font-size="12" fill="#52525b">붙여넣은 텍스트는 창에서 비움</text>
+
+    <rect x="440" y="648" width="280" height="52" rx="10" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.5"/>
+    <text x="580" y="670" font-weight="700">기억한 앱(터미널) 활성화 → ⌘V</text>
+    <text x="580" y="689" font-size="12" fill="#52525b">약 150ms 뒤 키 이벤트 전송</text>
+
+    <rect x="440" y="726" width="280" height="56" rx="10" fill="#ecfdf5" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="580" y="750" font-weight="700">Claude Code 입력창에 삽입 완료</text>
+    <text x="580" y="770" font-size="12" fill="#52525b">Enter(전송)는 사용자가 직접</text>
+
+    <!-- 예외 메모 -->
+    <rect x="760" y="138" width="220" height="52" rx="10" fill="#fef2f2" stroke="#dc6b6b" stroke-width="1.3" stroke-dasharray="5 4"/>
+    <text x="870" y="160" font-weight="700" fill="#7f1d1d">마이크·음성 인식 권한 없음</text>
+    <text x="870" y="179" font-size="12" fill="#7f1d1d">→ 시스템 설정 열기 버튼 표시</text>
+
+    <rect x="760" y="648" width="220" height="52" rx="10" fill="#fef2f2" stroke="#dc6b6b" stroke-width="1.3" stroke-dasharray="5 4"/>
+    <text x="870" y="670" font-weight="700" fill="#7f1d1d">손쉬운 사용 권한 없음</text>
+    <text x="870" y="689" font-size="12" fill="#7f1d1d">→ 복사까지만, "⌘V 눌러주세요"</text>
+  </g>
+
+  <!-- 화살표 -->
+  <g stroke="#3f3f46" stroke-width="1.5" fill="none">
+    <path d="M420 112 V136" marker-end="url(#f)"/>
+    <path d="M420 190 V214" marker-end="url(#f)"/>
+    <path d="M420 268 V292" marker-end="url(#f)"/>
+    <path d="M420 346 V370" marker-end="url(#f)"/>
+    <path d="M420 424 V444" marker-end="url(#f)"/>
+    <path d="M310 486 H200 V568" marker-end="url(#f)"/>
+    <path d="M530 486 H580 V568" marker-end="url(#f)"/>
+    <path d="M200 622 V646" marker-end="url(#f)"/>
+    <path d="M580 622 V646" marker-end="url(#f)"/>
+    <path d="M580 700 V724" marker-end="url(#f)"/>
+    <!-- 다시 녹음 루프 -->
+    <path d="M260 398 H220 V164 H258" stroke-dasharray="5 4" marker-end="url(#f)"/>
+  </g>
+  <g stroke="#dc6b6b" stroke-width="1.4" fill="none" stroke-dasharray="5 4">
+    <path d="M580 164 H758" marker-end="url(#fr)"/>
+    <path d="M720 674 H758" marker-end="url(#fr)"/>
+  </g>
+
+  <!-- 라벨 -->
+  <g font-size="12" fill="#3f3f46">
+    <text x="228" y="476">[복사]</text>
+    <text x="540" y="476">[복사+붙여넣기]</text>
+    <text x="130" y="286" text-anchor="middle">다시 녹음</text>
+    <text x="130" y="302" text-anchor="middle">(이어쓰기)</text>
+  </g>
+</svg>

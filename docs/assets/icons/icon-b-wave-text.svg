@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- B안: 음파 → 텍스트 줄 (터미널 느낌) — "소리가 글이 된다" -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2C2C35"/>
+      <stop offset="1" stop-color="#15151A"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF9A62"/>
+      <stop offset="1" stop-color="#FF5C7A"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)" filter="url(#shadow)"/>
+  <rect x="104" y="104" width="816" height="816" rx="181" fill="none" stroke="#fff" stroke-opacity="0.08" stroke-width="4"/>
+  <g fill="url(#wave)">
+    <rect x="212" y="452" width="34" height="120" rx="17"/>
+    <rect x="270" y="382" width="34" height="260" rx="17"/>
+    <rect x="328" y="322" width="34" height="380" rx="17"/>
+    <rect x="386" y="402" width="34" height="220" rx="17"/>
+    <rect x="444" y="442" width="34" height="140" rx="17"/>
+  </g>
+  <g fill="#fff">
+    <rect x="530" y="386" width="280" height="36" rx="18" opacity="0.95"/>
+    <rect x="530" y="458" width="220" height="36" rx="18" opacity="0.8"/>
+    <rect x="530" y="530" width="260" height="36" rx="18" opacity="0.65"/>
+    <rect x="530" y="602" width="130" height="36" rx="18" opacity="0.5"/>
+  </g>
+  <rect x="676" y="594" width="26" height="52" rx="5" fill="url(#wave)"/>
+</svg>

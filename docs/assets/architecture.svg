@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" font-family="-apple-system, 'SF Pro Text', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#3f3f46"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="600" fill="#ffffff"/>
+
+  <!-- 경계: Mac 내부 -->
+  <rect x="16" y="16" width="928" height="568" rx="14" fill="none" stroke="#a1a1aa" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="36" y="44" font-size="13" font-weight="600" fill="#52525b">Mac 내부 · 음성과 텍스트를 외부로 전송하지 않음</text>
+
+  <!-- 사용자 -->
+  <rect x="36" y="130" width="140" height="138" rx="10" fill="#fff7ed" stroke="#ea8a2e" stroke-width="1.5"/>
+  <text x="106" y="176" font-size="15" font-weight="700" fill="#18181b" text-anchor="middle">사용자</text>
+  <text x="106" y="200" font-size="12" fill="#52525b" text-anchor="middle">🎙 말하기</text>
+  <text x="106" y="220" font-size="12" fill="#52525b" text-anchor="middle">한국어 + 영어 단어</text>
+  <text x="106" y="240" font-size="12" fill="#52525b" text-anchor="middle">클릭 · 확인 · 수정</text>
+
+  <!-- Speech 프레임워크 -->
+  <rect x="36" y="296" width="140" height="84" rx="10" fill="#f4f4f5" stroke="#71717a" stroke-width="1.5"/>
+  <text x="106" y="324" font-size="13" font-weight="700" fill="#18181b" text-anchor="middle">Speech 프레임워크</text>
+  <text x="106" y="344" font-size="12" fill="#52525b" text-anchor="middle">한국어 온디바이스 모델</text>
+  <text x="106" y="362" font-size="12" fill="#52525b" text-anchor="middle">(macOS 내장)</text>
+
+  <!-- 앱 컨테이너 -->
+  <rect x="200" y="64" width="470" height="430" rx="12" fill="#eef4ff" stroke="#3b6fe0" stroke-width="1.8"/>
+  <text x="220" y="92" font-size="15" font-weight="700" fill="#1e3a8a">VoiceTyping.app</text>
+  <text x="220" y="112" font-size="12" fill="#3b4a6b">Swift · SwiftUI · 메뉴바 전용 (LSUIElement, Dock 아이콘 없음)</text>
+
+  <!-- MenuBarExtra -->
+  <rect x="220" y="128" width="430" height="48" rx="8" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.4"/>
+  <text x="236" y="149" font-size="13" font-weight="700" fill="#18181b">MenuBarExtra</text>
+  <text x="236" y="167" font-size="12" fill="#52525b">메뉴바 🎙 아이콘 · 클릭하면 팝오버 창 열림 · 녹음 중 빨간 점</text>
+
+  <!-- PopoverView -->
+  <rect x="220" y="200" width="430" height="64" rx="8" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.4"/>
+  <text x="236" y="222" font-size="13" font-weight="700" fill="#18181b">PopoverView</text>
+  <text x="236" y="241" font-size="12" fill="#52525b">실시간 텍스트 표시 · 직접 수정 가능</text>
+  <text x="236" y="257" font-size="12" fill="#52525b">[● 녹음 / ■ 정지]  [지우기]  [복사]  [복사+붙여넣기]</text>
+
+  <!-- Transcriber -->
+  <rect x="220" y="296" width="205" height="84" rx="8" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.4"/>
+  <text x="236" y="318" font-size="13" font-weight="700" fill="#18181b">Transcriber</text>
+  <text x="236" y="338" font-size="12" fill="#52525b">AVAudioEngine 마이크 캡처</text>
+  <text x="236" y="355" font-size="12" fill="#52525b">SFSpeechRecognizer(ko-KR)</text>
+  <text x="236" y="372" font-size="12" fill="#52525b">온디바이스 · 용어 힌트</text>
+
+  <!-- Paster -->
+  <rect x="445" y="296" width="205" height="84" rx="8" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.4"/>
+  <text x="461" y="318" font-size="13" font-weight="700" fill="#18181b">Paster</text>
+  <text x="461" y="338" font-size="12" fill="#52525b">마지막 활성 앱 기억</text>
+  <text x="461" y="355" font-size="12" fill="#52525b">클립보드 복사</text>
+  <text x="461" y="372" font-size="12" fill="#52525b">→ 앱 활성화 → ⌘V 전송</text>
+
+  <!-- TranscriptBuffer -->
+  <rect x="220" y="404" width="205" height="72" rx="8" fill="#ffffff" stroke="#3b6fe0" stroke-width="1.4"/>
+  <text x="236" y="426" font-size="13" font-weight="700" fill="#18181b">TranscriptBuffer</text>
+  <text x="236" y="446" font-size="12" fill="#52525b">부분 결과 누적 · 이어쓰기</text>
+  <text x="236" y="464" font-size="12" fill="#52525b">순수 로직 (단위 테스트)</text>
+
+  <!-- 테스트 범위 범례 -->
+  <rect x="445" y="404" width="205" height="72" rx="8" fill="none" stroke="#3b6fe0" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <text x="461" y="426" font-size="12" font-weight="700" fill="#1e3a8a">테스트 범위</text>
+  <text x="461" y="446" font-size="12" fill="#52525b">단위: TranscriptBuffer, Paster</text>
+  <text x="461" y="464" font-size="12" fill="#52525b">수동: 마이크 · 권한 · ⌘V</text>
+
+  <!-- 터미널 -->
+  <rect x="700" y="296" width="224" height="84" rx="10" fill="#f4f4f5" stroke="#71717a" stroke-width="1.5"/>
+  <text x="812" y="324" font-size="13" font-weight="700" fill="#18181b" text-anchor="middle">터미널</text>
+  <text x="812" y="344" font-size="12" fill="#52525b" text-anchor="middle">Claude Code 입력창</text>
+  <text x="812" y="362" font-size="12" fill="#52525b" text-anchor="middle">Enter는 사용자가 직접</text>
+
+  <!-- 클립보드 -->
+  <rect x="700" y="404" width="224" height="72" rx="10" fill="#f4f4f5" stroke="#71717a" stroke-width="1.5"/>
+  <text x="812" y="432" font-size="13" font-weight="700" fill="#18181b" text-anchor="middle">NSPasteboard</text>
+  <text x="812" y="452" font-size="12" fill="#52525b" text-anchor="middle">시스템 클립보드</text>
+
+  <!-- 권한 바 -->
+  <rect x="36" y="520" width="888" height="44" rx="10" fill="#fef2f2" stroke="#dc6b6b" stroke-width="1.4"/>
+  <text x="480" y="547" font-size="13" fill="#7f1d1d" text-anchor="middle"><tspan font-weight="700">macOS 권한(TCC)</tspan>   ·   🎙 마이크   ·   음성 인식   ·   손쉬운 사용 (자동 ⌘V 붙여넣기할 때만 필요)</text>
+
+  <!-- 화살표 -->
+  <g stroke="#3f3f46" stroke-width="1.5" fill="none">
+    <!-- 사용자 → MenuBarExtra -->
+    <path d="M176 152 H218" marker-end="url(#a)"/>
+    <!-- 사용자 → PopoverView -->
+    <path d="M176 232 H218" marker-end="url(#a)"/>
+    <!-- MenuBarExtra → PopoverView -->
+    <path d="M435 176 V198" marker-end="url(#a)"/>
+    <!-- PopoverView → Transcriber (시작/정지) -->
+    <path d="M290 264 V294" marker-end="url(#a)"/>
+    <!-- Transcriber → PopoverView (부분 텍스트) -->
+    <path d="M370 296 V266" marker-end="url(#a)"/>
+    <!-- PopoverView → Paster -->
+    <path d="M548 264 V294" marker-end="url(#a)"/>
+    <!-- Transcriber ↔ Speech -->
+    <path d="M178 338 H218" marker-start="url(#a)" marker-end="url(#a)"/>
+    <!-- Transcriber → TranscriptBuffer -->
+    <path d="M322 380 V402" marker-end="url(#a)"/>
+    <!-- Paster → 터미널 -->
+    <path d="M650 338 H698" marker-end="url(#a)"/>
+    <!-- Paster → 클립보드 -->
+    <path d="M650 368 H680 V440 H698" marker-end="url(#a)"/>
+  </g>
+
+  <!-- 화살표 라벨 -->
+  <g font-size="11" fill="#3f3f46">
+    <text x="182" y="146">클릭</text>
+    <text x="182" y="226">수정</text>
+    <text x="244" y="284">시작/정지</text>
+    <text x="376" y="284">부분 텍스트</text>
+    <text x="554" y="284">최종 텍스트</text>
+    <text x="181" y="331">오디오</text>
+    <text x="181" y="352">결과</text>
+    <text x="658" y="331">⌘V</text>
+    <text x="684" y="397">복사</text>
+  </g>
+</svg>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Typing 아이콘 후보</title>
+<style>
+  :root {
+    --bg: #f2f2f5; --fg: #1d1d1f; --muted: #6e6e73; --card: #ffffff; --line: #d2d2d7;
+    --dock-light: rgba(255,255,255,0.55); --dock-dark: rgba(30,30,32,0.6);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #111113; --fg: #f5f5f7; --muted: #a1a1a6; --card: #1c1c1e; --line: #3a3a3c; }
+  }
+  :root[data-theme="dark"] { --bg: #111113; --fg: #f5f5f7; --muted: #a1a1a6; --card: #1c1c1e; --line: #3a3a3c; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.5 -apple-system, "Apple SD Gothic Neo", sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 28px 16px 40px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .card h2 { font-size: 17px; margin: 0 0 2px; }
+  .card p { color: var(--muted); margin: 0 0 12px; }
+  .hero { display: block; width: 220px; height: 220px; margin: 4px auto 14px; }
+  .sizes { display: flex; align-items: flex-end; justify-content: center; gap: 14px; padding: 12px; border-radius: 12px; }
+  .sizes.light { background: linear-gradient(135deg, #dfe7f5, #f6e9e1); }
+  .sizes.dark { background: linear-gradient(135deg, #1d2333, #2f2430); margin-top: 8px; }
+  .sizes img { display: block; }
+  .note { margin-top: 18px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Voice Typing 앱 아이콘 후보</h1>
+  <p class="lead">Finder·Launchpad·dmg 에 보이는 앱 아이콘입니다. 메뉴바 아이콘(🎙)은 그대로 둡니다. 아래 줄은 128 · 64 · 32px 실제 크기 미리보기입니다.</p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>A안 · 마이크 + 텍스트 커서</h2>
+      <p>"말하면 입력된다." 파란 계열, macOS 기본 앱과 잘 어울리는 단정한 느낌.</p>
+      <img class="hero" src="../assets/icons/icon-a-mic-cursor.svg" alt="A안 아이콘">
+      <div class="sizes light"><img src="../assets/icons/icon-a-mic-cursor.svg" width="128" height="128" alt=""><img src="../assets/icons/icon-a-mic-cursor.svg" width="64" height="64" alt=""><img src="../assets/icons/icon-a-mic-cursor.svg" width="32" height="32" alt=""></div>
+      <div class="sizes dark"><img src="../assets/icons/icon-a-mic-cursor.svg" width="128" height="128" alt=""><img src="../assets/icons/icon-a-mic-cursor.svg" width="64" height="64" alt=""><img src="../assets/icons/icon-a-mic-cursor.svg" width="32" height="32" alt=""></div>
+    </section>
+
+    <section class="card">
+      <h2>B안 · 음파 → 텍스트 줄</h2>
+      <p>"소리가 글이 된다." 어두운 터미널 느낌, Claude Code 와 함께 쓰는 개발 도구 분위기.</p>
+      <img class="hero" src="../assets/icons/icon-b-wave-text.svg" alt="B안 아이콘">
+      <div class="sizes light"><img src="../assets/icons/icon-b-wave-text.svg" width="128" height="128" alt=""><img src="../assets/icons/icon-b-wave-text.svg" width="64" height="64" alt=""><img src="../assets/icons/icon-b-wave-text.svg" width="32" height="32" alt=""></div>
+      <div class="sizes dark"><img src="../assets/icons/icon-b-wave-text.svg" width="128" height="128" alt=""><img src="../assets/icons/icon-b-wave-text.svg" width="64" height="64" alt=""><img src="../assets/icons/icon-b-wave-text.svg" width="32" height="32" alt=""></div>
+    </section>
+
+    <section class="card">
+      <h2>C안 · 말풍선 속 "가A"</h2>
+      <p>"한국어·영어 음성 입력." 따뜻한 색, 무엇을 하는 앱인지 가장 직접적으로 보임.</p>
+      <img class="hero" src="../assets/icons/icon-c-bubble-hangul.svg" alt="C안 아이콘">
+      <div class="sizes light"><img src="../assets/icons/icon-c-bubble-hangul.svg" width="128" height="128" alt=""><img src="../assets/icons/icon-c-bubble-hangul.svg" width="64" height="64" alt=""><img src="../assets/icons/icon-c-bubble-hangul.svg" width="32" height="32" alt=""></div>
+      <div class="sizes dark"><img src="../assets/icons/icon-c-bubble-hangul.svg" width="128" height="128" alt=""><img src="../assets/icons/icon-c-bubble-hangul.svg" width="64" height="64" alt=""><img src="../assets/icons/icon-c-bubble-hangul.svg" width="32" height="32" alt=""></div>
+    </section>
+  </div>
+
+  <p class="note">고르시면 그 아이콘을 앱(<code>AppIcon.icns</code>)과 dmg 에 넣어 다시 빌드합니다. 색이나 모양을 바꾸고 싶으시면 말씀해 주세요.</p>
+</main>
+</body>
+</html>
