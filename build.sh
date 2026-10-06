@@ -24,8 +24,14 @@ cp Resources/Info.plist "$APP/Contents/"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/"
 /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" \
                         -c "Set :CFBundleVersion $VERSION" "$APP/Contents/Info.plist"
-# 자체 서명 인증서 이름을 VOICETYPING_SIGN_ID 로 주면 재빌드해도 손쉬운 사용 권한이 유지된다. 없으면 임시(ad-hoc) 서명.
-codesign --force --sign "${VOICETYPING_SIGN_ID:--}" "$APP"
+# 서명 순서: VOICETYPING_SIGN_ID → 이 Mac 의 "Voice Typing Local Signing" 인증서(./make-signing-cert.sh) → 임시(ad-hoc).
+# 임시 서명은 빌드할 때마다 앱 지문이 바뀌어, 설치할 때마다 손쉬운 사용 권한을 다시 켜야 한다.
+SIGN_ID="${VOICETYPING_SIGN_ID:-}"
+if [[ -z "$SIGN_ID" ]] && security find-certificate -c "Voice Typing Local Signing" >/dev/null 2>&1; then
+    SIGN_ID="Voice Typing Local Signing"
+fi
+codesign --force --sign "${SIGN_ID:--}" "$APP"
+echo "서명: ${SIGN_ID:-임시(ad-hoc) — 설치할 때마다 손쉬운 사용 권한을 다시 켜야 합니다}"
 
 # 디스크 이미지: 앱 + Applications 바로가기 (Finder 에서 끌어다 놓아 설치할 수도 있다)
 DMG="dist/VoiceTyping-$VERSION.dmg"

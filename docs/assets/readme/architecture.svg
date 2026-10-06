@@ -48,7 +48,8 @@
   <text x="486" y="342" font-size="12" fill="#4338ca">마지막 사용 앱 기억</text>
   <text x="486" y="359" font-size="12" fill="#4338ca">클립보드 복사 → ⌘V 전송</text>
 
-  <text x="240" y="400" font-size="12" fill="#64748b">테스트: 변환·무음 판정·장치 전환·버퍼·붙여넣기는 단위 테스트, 실제 모델은 통합 테스트</text>
+  <text x="240" y="392" font-size="12" fill="#1e1b4b"><tspan font-weight="700">HotKeys</tspan> · 전역 단축키 ⌃⌥R/S/C/V/D</text>
+  <text x="240" y="410" font-size="12" fill="#64748b">단위 테스트 + 실제 모델 통합 테스트</text>
 
   <!-- 결과 -->
   <rect x="220" y="440" width="480" height="80" rx="10" fill="#f0f9ff" stroke="#0ea5e9"/>

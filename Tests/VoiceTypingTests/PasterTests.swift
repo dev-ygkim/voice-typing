@@ -58,6 +58,12 @@ struct PasterTests {
         #expect(reason?.contains("손쉬운 사용") == true)
     }
 
+    @Test("권한 때문에 못 붙여넣은 것은 따로 알아볼 수 있다 (단축키일 때 권한 설정 화면을 열기 위해)")
+    func permissionReasonIsRecognizable() throws {
+        #expect(Paster.blocker(target: try otherApp(), trusted: false) == Paster.needsAccessibility)
+        #expect(Paster.blocker(target: nil, trusted: false) != Paster.needsAccessibility)   // 대상 앱이 없는 것은 권한 문제가 아니다
+    }
+
     @Test("대상 앱과 권한이 있으면 붙여넣는다")
     func pasteAllowed() throws {
         #expect(Paster.blocker(target: try otherApp(), trusted: true) == nil)

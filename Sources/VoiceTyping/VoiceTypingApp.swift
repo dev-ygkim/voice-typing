@@ -1,4 +1,5 @@
 import AppKit
+import Carbon.HIToolbox
 import SwiftUI
 
 @main
@@ -6,23 +7,36 @@ struct VoiceTypingApp: App {
     @State private var model: SpeechModel
     @State private var transcriber: Transcriber
     @State private var paster: Paster
+    @State private var hotKeys: HotKeys
 
     init() {
         #if DEBUG
-        // README 화면 캡처용 (디버그 빌드 전용): -ScreenshotState first-run|recording|done 으로 실행하면 그 화면으로 시작한다.
+        // README 화면 캡처용 (디버그 빌드 전용): -ScreenshotState first-run|recording|done|shortcuts 로 실행하면 그 화면으로 시작한다.
         // first-run 은 빈 폴더를 모델 위치로 써서 내려받기 버튼 화면을 만든다.
         let shot = UserDefaults.standard.string(forKey: "ScreenshotState")
         let model = shot == "first-run"
             ? SpeechModel(base: FileManager.default.temporaryDirectory.appending(path: "voicetyping-first-run"))
             : SpeechModel()
+        // 캡처할 때는 사용자가 바꾼 단축키 대신 기본값을 보여 준다 (사용자 설정은 읽지도 쓰지도 않음)
+        var shortcutStore = ShortcutStore(defaults: .standard)
+        if shot != nil, let blank = UserDefaults(suiteName: "local.voicetyping.screenshot") {
+            blank.removePersistentDomain(forName: "local.voicetyping.screenshot")
+            shortcutStore = ShortcutStore(defaults: blank)
+        }
         #else
         let model = SpeechModel()
+        let shortcutStore = ShortcutStore(defaults: .standard)
         #endif
         let transcriber = Transcriber(model: model)
         let paster = Paster()
+        // 단축키는 메인 스레드(앱 이벤트)에서 불린다
+        let hotKeys = HotKeys(store: shortcutStore) { actions in
+            MainActor.assumeIsolated { Self.run(actions, transcriber: transcriber, model: model, paster: paster) }
+        }
         _model = State(initialValue: model)
         _transcriber = State(initialValue: transcriber)
         _paster = State(initialValue: paster)
+        _hotKeys = State(initialValue: hotKeys)
         Task {
             await model.prepare()        // 앱을 켜자마자 모델을 불러와 둔다
             #if DEBUG
@@ -34,11 +48,50 @@ struct VoiceTypingApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            PopoverView(transcriber: transcriber, model: model, paster: paster)
+            PopoverView(transcriber: transcriber, model: model, paster: paster, hotKeys: hotKeys)
         } label: {
             Image(nsImage: Self.icon(recording: transcriber.isBusy))
+            if transcriber.isRecording { Text("녹음중") }
         }
         .menuBarExtraStyle(.window)
+    }
+
+    @MainActor private static var openedAccessibilitySettings = false
+
+    /// 단축키를 눌렀을 때. 메뉴바 창의 버튼과 같은 조건에서 같은 일을 한다.
+    @MainActor
+    static func run(_ actions: [HotKeyAction], transcriber: Transcriber, model: SpeechModel, paster: Paster) {
+        guard let action = HotKeyAction.pick(actions, state: transcriber.state, modelReady: model.state == .ready,
+                                             hasText: !transcriber.buffer.isEmpty) else {
+            NSSound.beep()   // 지금은 할 수 없는 일 (예: 녹음 중이 아닌데 중지)
+            return
+        }
+        switch action {
+        case .start, .stop:
+            transcriber.toggle()
+        case .copy:
+            Paster.copy(transcriber.buffer.outgoing)
+        case .clear:
+            transcriber.buffer.clear()
+        case .paste:
+            Task {
+                // 단축키의 ⌃⌥ 를 누른 채로 ⌘V 를 보내면 다른 조합이 되므로 손을 뗄 때까지 기다린다
+                _ = await Paster.wait(timeout: .seconds(2)) {
+                    CGEventSource.flagsState(.combinedSessionState)
+                        .intersection([.maskControl, .maskAlternate, .maskShift, .maskCommand]).isEmpty
+                }
+                guard let reason = await paster.copyAndPaste(transcriber.buffer.outgoing) else {
+                    transcriber.buffer.clear()   // 버튼과 같이, 붙여넣었으면 지운다
+                    return
+                }
+                NSSound.beep()                   // 클립보드 복사까지만 됨. 메뉴바 창이 닫혀 있어 이유를 글로 보여 줄 곳이 없다
+                // 권한이 없으면 고칠 곳을 바로 연다. 앱을 켠 동안 한 번만 (누를 때마다 열면 성가시다)
+                if reason == Paster.needsAccessibility, !openedAccessibilitySettings {
+                    openedAccessibilitySettings = true
+                    NSWorkspace.shared.open(Paster.accessibilitySettings)
+                }
+            }
+        }
     }
 
     /// 평소에는 메뉴바 색을 따르는 마이크, 녹음 중에는 빨간 마이크
@@ -62,7 +115,13 @@ struct PopoverView: View {
     @Bindable var transcriber: Transcriber
     let model: SpeechModel
     let paster: Paster
+    let hotKeys: HotKeys
     @State private var notice: String?
+    #if DEBUG
+    @State private var showKeys = UserDefaults.standard.string(forKey: "ScreenshotState") == "shortcuts"   // README 캡처용
+    #else
+    @State private var showKeys = false
+    #endif
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -71,6 +130,7 @@ struct PopoverView: View {
             status
             textArea
             actions
+            if showKeys { ShortcutPanel(hotKeys: hotKeys) }
             footer
         }
         .padding(14)
@@ -220,19 +280,28 @@ struct PopoverView: View {
         }
     }
 
+    /// 안내 한 줄 + 버튼 줄. [단축키]와 [종료]는 양 끝에 떨어뜨려 잘못 눌리지 않게 한다.
     private var footer: some View {
-        HStack {
-            if let notice {
-                Text(notice).foregroundStyle(.tint)
-            } else {
-                Text("붙여넣기 대상: \(paster.target?.localizedName ?? "없음") · Enter는 직접 누르세요")
-                    .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 8) {
+            Group {
+                if let notice {
+                    Text(notice).foregroundStyle(.tint)
+                } else {
+                    Text("붙여넣기 대상: \(paster.target?.localizedName ?? "없음") · Enter는 직접 누르세요")
+                        .foregroundStyle(.secondary)
+                }
             }
-            Spacer()
-            Button("종료") { NSApp.terminate(nil) }
-                .buttonStyle(.borderless)
+            .font(.caption)
+            HStack {
+                Button { showKeys.toggle() } label: {
+                    Label(showKeys ? "단축키 닫기" : "단축키", systemImage: "keyboard")
+                }
+                Spacer()
+                Button { NSApp.terminate(nil) } label: { Label("종료", systemImage: "power") }
+            }
+            .buttonStyle(.bordered)
+            .font(.callout)
         }
-        .font(.caption)
     }
 
     private func copyAndPaste() {
@@ -246,6 +315,67 @@ struct PopoverView: View {
             notice = nil
             popover?.close()         // 붙여넣기가 끝났으면 팝오버를 닫는다
         }
+    }
+}
+
+/// 단축키 설정 칸. 칸을 누른 뒤 새 조합을 누르면 바뀌고, Esc 는 취소, ✕ 는 지우기.
+struct ShortcutPanel: View {
+    let hotKeys: HotKeys
+    @State private var editing: HotKeyAction?
+    @State private var monitor: Any?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("단축키 · 다른 앱을 쓰는 중에도 동작").font(.caption).foregroundStyle(.secondary)
+            ForEach(HotKeyAction.allCases, id: \.self) { action in
+                HStack(spacing: 6) {
+                    Text(action.title)
+                    Spacer()
+                    if hotKeys.failed.contains(action) {
+                        Text("쓸 수 없는 조합").font(.caption).foregroundStyle(.orange)
+                    }
+                    Button { listen(for: action) } label: {
+                        Text(editing == action ? "키를 누르세요…" : hotKeys.shortcuts[action]?.display ?? "없음")
+                            .frame(width: 104)
+                    }
+                    Button { hotKeys.set(nil, for: action) } label: { Image(systemName: "xmark") }
+                        .buttonStyle(.borderless)
+                        .help("지우기")
+                        .disabled(hotKeys.shortcuts[action] == nil)
+                }
+            }
+            Text("칸을 누르고 새 조합 입력 (⌃·⌥·⌘ 중 하나 이상) · Esc 취소").font(.caption2).foregroundStyle(.secondary)
+        }
+        .font(.callout)
+        .padding(10)
+        .background(.background.opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
+        .overlay(RoundedRectangle(cornerRadius: 8).stroke(.quaternary))
+        .onDisappear { finish() }
+        // 키를 받는 중에 창이 닫히면 멈춰 둔 단축키를 다시 켠다
+        .onReceive(NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)) { _ in finish() }
+    }
+
+    private func listen(for action: HotKeyAction) {
+        finish()
+        editing = action
+        hotKeys.paused = true
+        monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            if event.keyCode == UInt16(kVK_Escape) {
+                finish()
+            } else if let shortcut = Shortcut(keyCode: event.keyCode, modifiers: event.modifierFlags,
+                                              characters: event.charactersIgnoringModifiers) {
+                hotKeys.set(shortcut, for: action)
+                finish()
+            }
+            return nil   // 키를 받는 동안에는 글자 칸 등으로 넘기지 않는다
+        }
+    }
+
+    private func finish() {
+        if let monitor { NSEvent.removeMonitor(monitor) }
+        monitor = nil
+        editing = nil
+        hotKeys.paused = false
     }
 }
 

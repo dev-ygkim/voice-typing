@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단축키 설정 샘플 UI</title>
+<style>
+  :root {
+    --page-bg: #111113; --page-fg: #f5f5f7; --muted: #a1a1a6;
+    --panel-bg: #2a2a2d; --panel-border: rgba(255,255,255,.14);
+    --field-bg: rgba(0,0,0,.28); --field-border: rgba(255,255,255,.14);
+    --btn-bg: rgba(255,255,255,.12); --accent: #0a84ff; --rec: #ff453a;
+    --menubar-bg: #1e1e20; --card-bg: #1a1a1c;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page-bg); color: var(--page-fg);
+         font: 14px/1.45 -apple-system, "SF Pro Text", "Apple SD Gothic Neo", sans-serif; -webkit-font-smoothing: antialiased; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  h2 { font-size: 16px; margin: 0 0 4px; }
+  .lead, .note { color: var(--muted); margin: 0 0 14px; }
+  section { background: var(--card-bg); border: 1px solid var(--panel-border); border-radius: 14px; padding: 16px; margin-bottom: 18px; }
+  .row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  .cap { font-size: 12px; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+  ul.pros { margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
+
+  /* 메뉴바 */
+  .menubar { display: flex; align-items: center; gap: 14px; height: 28px; padding: 0 12px; border-radius: 8px;
+             background: var(--menubar-bg); font-size: 13px; width: 520px; max-width: 100%; }
+  .menubar .app { font-weight: 700; }
+  .menubar .right { margin-left: auto; display: flex; gap: 12px; align-items: center; }
+  .mic { display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 5px; }
+  .mic svg { width: 15px; height: 15px; }
+  .mic.on svg { color: var(--rec); }
+
+  /* 메뉴바 창 (실제 앱과 같은 360px) */
+  .pop { width: 360px; max-width: 100%; background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px;
+         padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 18px 50px rgba(0,0,0,.5); }
+  .hdr { display: flex; align-items: center; gap: 6px; }
+  .hdr b { font-size: 15px; } .ver { font-size: 11px; color: var(--muted); }
+  .badge { margin-left: auto; font-size: 11px; color: var(--muted); border: 1px solid var(--panel-border); border-radius: 99px; padding: 1px 8px; }
+  .status { font-size: 13px; color: var(--muted); }
+  .text { height: 96px; border: 1px solid var(--field-border); background: var(--field-bg); border-radius: 8px; padding: 8px; font-size: 15px; }
+  .actions { display: flex; align-items: center; gap: 8px; }
+  .rec { width: 44px; height: 44px; border-radius: 50%; background: var(--rec); display: grid; place-items: center; }
+  .rec i { width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+  .btn { font: inherit; font-size: 13px; color: var(--page-fg); background: var(--btn-bg); border: 0; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+  .btn.primary { background: var(--accent); color: #fff; }
+  .btn.link { background: none; padding: 2px 4px; color: var(--muted); font-size: 12px; }
+  .btn.link.active { color: var(--accent); }
+  .spacer { flex: 1; }
+  .footer { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+
+  /* 단축키 표 (A·B 공통) */
+  .keys { border: 1px solid var(--panel-border); border-radius: 8px; padding: 10px; background: rgba(255,255,255,.03); }
+  .keys .title { font-size: 12px; font-weight: 600; margin-bottom: 8px; color: var(--muted); }
+  .krow { display: grid; grid-template-columns: 1fr 120px 22px; gap: 8px; align-items: center; padding: 4px 0; font-size: 13px; }
+  .kfield { font: inherit; font-size: 13px; text-align: center; color: var(--page-fg); background: var(--field-bg);
+            border: 1px solid var(--field-border); border-radius: 6px; padding: 3px 6px; cursor: pointer; }
+  .kfield.listening { border-color: var(--accent); color: var(--accent); }
+  .kfield.empty { color: var(--muted); }
+  .kclear { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 14px; }
+  .hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* B안: 별도 설정 창 */
+  .win { width: 420px; max-width: 100%; background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 12px;
+         overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.5); }
+  .titlebar { height: 32px; display: flex; align-items: center; justify-content: center; position: relative;
+              border-bottom: 1px solid var(--panel-border); font-size: 13px; font-weight: 600; }
+  .lights { position: absolute; left: 12px; display: flex; gap: 8px; }
+  .lights i { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; }
+  .lights i:nth-child(2) { background: #febc2e; } .lights i:nth-child(3) { background: #28c840; }
+  .win .body { padding: 16px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>단축키 설정 · 메뉴바 "녹음중" 표시 샘플</h1>
+  <p class="lead">단축키 칸을 누르고 새 조합을 눌러 보세요. ⌃·⌥·⌘ 중 하나 이상과 함께 눌러야 하며 Esc 는 취소, ✕ 는 지우기입니다. 두 안의 값은 서로 연결돼 있습니다.</p>
+
+  <section>
+    <h2>① 메뉴바 표시 (A·B 공통)</h2>
+    <p class="note">녹음 중일 때만 빨간 마이크 옆에 "녹음중" 글자가 붙습니다. 글자색은 메뉴바 기본색입니다.</p>
+    <p class="cap">평소</p>
+    <div class="menubar"><span class="app">Terminal</span><span>셸</span><span>편집</span>
+      <span class="right"><span class="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span>10월 6일 (월) 오후 7:30</span></span></div>
+    <p class="cap" style="margin-top:10px">녹음 중</p>
+    <div class="menubar"><span class="app">Terminal</span><span>셸</span><span>편집</span>
+      <span class="right"><span class="mic on"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>녹음중</span><span>10월 6일 (월) 오후 7:30</span></span></div>
+  </section>
+
+  <section>
+    <h2>② A안 · 메뉴바 창 안에서 펼치기</h2>
+    <p class="note">창 아래쪽 [⌨ 단축키] 를 누르면 같은 창 안에 설정 칸이 펼쳐지고, 다시 누르면 접힙니다.</p>
+    <div class="row">
+      <div><p class="cap">접힌 상태 (평소)</p><div class="pop" data-pop="closed"></div></div>
+      <div><p class="cap">펼친 상태</p><div class="pop" data-pop="open"></div></div>
+    </div>
+    <ul class="pros">
+      <li>창 하나로 끝나서 찾기 쉽고, 바꾼 단축키를 바로 써 볼 수 있습니다.</li>
+      <li>펼치면 창이 약 170px 길어집니다.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>③ B안 · 별도 설정 창</h2>
+    <p class="note">창 아래쪽 [설정…] 을 누르면 메뉴바 창이 닫히고 "Voice Typing 설정" 창이 열립니다.</p>
+    <div class="row">
+      <div><p class="cap">메뉴바 창</p><div class="pop" data-pop="settings"></div></div>
+      <div><p class="cap">설정 창</p>
+        <div class="win"><div class="titlebar"><span class="lights"><i></i><i></i><i></i></span>Voice Typing 설정</div>
+          <div class="body"><div data-keys></div></div></div></div>
+    </div>
+    <ul class="pros">
+      <li>메뉴바 창은 그대로 작고, 나중에 다른 설정이 생기면 이 창에 모을 수 있습니다.</li>
+      <li>메뉴바 전용 앱이라 설정 창을 앞으로 띄우는 처리가 따로 필요합니다.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+  const ACTIONS = [["start", "녹음 시작"], ["stop", "녹음 중지"], ["copy", "복사"], ["paste", "복사+붙여넣기"]];
+  const keys = { start: "⌃⌥R", stop: "⌃⌥S", copy: "⌃⌥C", paste: "⌃⌥V" };   // 기본값
+  let listening = null;
+
+  function keysPanel() {
+    return `<div class="keys"><div class="title">단축키 · 다른 앱을 쓰는 중에도 동작</div>` +
+      ACTIONS.map(([id, name]) => `<div class="krow"><span>${name}</span>` +
+        `<button class="kfield" data-id="${id}"></button><button class="kclear" data-clear="${id}" title="지우기">✕</button></div>`).join("") +
+      `<div class="hint">칸을 누르고 새 조합 입력 · Esc 취소</div></div>`;
+  }
+  function popover(kind) {
+    const footerBtn = kind === "settings" ? `<button class="btn link">설정…</button>`
+      : `<button class="btn link ${kind === "open" ? "active" : ""}">⌨ 단축키</button>`;
+    return `<div class="hdr"><b>Voice Typing</b><span class="ver">v1.1.0</span><span class="badge">🔒 한국어 · 온디바이스</span></div>
+      <div class="status">✓ 인식 완료 · 필요하면 직접 수정하세요</div>
+      <div class="text">오늘 Claude Code에서 commit하고 push한 다음에 pull request 만들어줘.</div>
+      <div class="actions"><span class="rec"><i></i></span><span class="spacer"></span>
+        <button class="btn">🗑</button><button class="btn">복사</button><button class="btn primary">복사+붙여넣기</button></div>
+      ${kind === "open" ? keysPanel() : ""}
+      <div class="footer"><span>붙여넣기 대상: Terminal · Enter는 직접 누르세요</span><span class="spacer"></span>${footerBtn}<button class="btn link">종료</button></div>`;
+  }
+  document.querySelectorAll("[data-pop]").forEach(el => el.innerHTML = popover(el.dataset.pop));
+  document.querySelectorAll("[data-keys]").forEach(el => el.innerHTML = keysPanel());
+
+  function render() {
+    document.querySelectorAll(".kfield").forEach(f => {
+      const id = f.dataset.id, on = listening === id;
+      f.textContent = on ? "키를 누르세요…" : (keys[id] || "없음");
+      f.classList.toggle("listening", on);
+      f.classList.toggle("empty", !on && !keys[id]);
+    });
+  }
+  document.addEventListener("click", e => {
+    const field = e.target.closest(".kfield"), clear = e.target.closest("[data-clear]");
+    if (field) listening = listening === field.dataset.id ? null : field.dataset.id;
+    else if (clear) { keys[clear.dataset.clear] = ""; listening = null; }
+    else listening = null;
+    render();
+  });
+  document.addEventListener("keydown", e => {
+    if (!listening) return;
+    e.preventDefault();
+    if (e.key === "Escape") { listening = null; return render(); }
+    if (["Control", "Alt", "Shift", "Meta"].includes(e.key)) return;
+    if (!(e.ctrlKey || e.altKey || e.metaKey)) return;   // 단독 키는 평소 타자를 가로채므로 받지 않는다
+    const key = e.code.startsWith("Key") ? e.code.slice(3) : e.code.startsWith("Digit") ? e.code.slice(5)
+              : e.code === "Space" ? "Space" : e.key.toUpperCase();
+    keys[listening] = (e.ctrlKey ? "⌃" : "") + (e.altKey ? "⌥" : "") + (e.shiftKey ? "⇧" : "") + (e.metaKey ? "⌘" : "") + key;
+    listening = null; render();
+  });
+  render();
+</script>
+</body>
+</html>

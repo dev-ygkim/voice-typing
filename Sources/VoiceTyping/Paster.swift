@@ -38,10 +38,13 @@ final class Paster {
         pasteboard.setString(text, forType: .string)
     }
 
+    static let needsAccessibility = "손쉬운 사용 권한이 없어 복사만 했습니다 — ⌘V를 눌러 주세요"
+    static let accessibilitySettings = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!
+
     /// ⌘V 를 보낼 수 없는 이유. 보낼 수 있으면 nil.
     static func blocker(target: NSRunningApplication?, trusted: Bool) -> String? {
         guard let target, !target.isTerminated else { return "붙여넣을 앱이 없어 복사만 했습니다" }
-        guard trusted else { return "손쉬운 사용 권한이 없어 복사만 했습니다 — ⌘V를 눌러 주세요" }
+        guard trusted else { return needsAccessibility }
         return nil
     }
 
@@ -90,7 +93,10 @@ final class Paster {
 #if DEBUG
 extension Paster {
     /// README 화면 캡처용: 붙여넣기 대상을 macOS 기본 터미널로 보이게 한다 (디버그 빌드 전용, 터미널이 실행 중이어야 함)
+    /// 캡처 도중 다른 앱을 써도 대상이 바뀌지 않게 앱 전환 기록을 멈춘다.
     func stageForScreenshot() {
+        if let observer { center.removeObserver(observer) }
+        observer = nil
         target = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.Terminal").first
     }
 }
